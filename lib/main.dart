@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_api_call/providers/pets_provider.dart';
 
 import 'home_page.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  ChangeNotifierProvider(create:  (context)=>,
+    return  ChangeNotifierProvider(create:  (context)=>PetsProvider(),
       child:const  MaterialApp(
         debugShowCheckedModeBanner: false,
         home: HomePage(),

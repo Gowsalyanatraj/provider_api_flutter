@@ -10,7 +10,7 @@ class PetsProvider extends ChangeNotifier {
   bool isLoading = true;
   String error = '';
   Pets pets = Pets(data: []);
-
+  // Pets serachedPets = Pets(data: []);
   String searchText = '';
 
   //
@@ -26,6 +26,6 @@ class PetsProvider extends ChangeNotifier {
       error = e.toString();
     }
     isLoading = false;
-    updateData();
+    notifyListeners();
   }
 }
