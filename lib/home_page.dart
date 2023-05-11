@@ -14,10 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PetsProvider>(context);
@@ -35,7 +31,7 @@ class _HomePageState extends State<HomePage> {
                 : getBodyUI(provider.pets));
   }
 
- Widget getLoadingUI() {
+  Widget getLoadingUI() {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -49,45 +45,58 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-Widget getErrorUI(String error) {
-  return Center(
-    child: Text(
-      error,
-      style: const TextStyle(color: Colors.red, fontSize: 22),
-    ),
-  );
-}
+  Widget getErrorUI(String error) {
+    return Center(
+      child: Text(
+        error,
+        style: const TextStyle(color: Colors.red, fontSize: 22),
+      ),
+    );
+  }
 
-Widget getBodyUI(Pets pets) {
-  return Column(
-    children: [
-      TextField(
-        decoration: InputDecoration(
-          hintText: 'Search',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20)
-          )
+  Widget getBodyUI(Pets pets) {
+    final provider = Provider.of<PetsProvider>(context, listen: false);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            onChanged: (value) {
+              provider.search(value);
+            },
+            decoration: InputDecoration(
+                hintText: 'Search',
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                suffixIcon: const Icon(Icons.search)),
+          ),
         ),
-      ),
-
-      Expanded(
-        child: ListView.builder(
-            itemCount: pets.data.length,
-            itemBuilder: (context, index) => ListTile(
-              leading:CircleAvatar(
-                radius: 22,
-                backgroundImage:NetworkImage(pets.data[index].petImage),
-                backgroundColor: Colors.grey,
-              ) ,
-                  title: Text(pets.data[index].userName),
-                  trailing:pets.data[index].isFriendly ?const Icon(Icons.thumb_up,
-                  color: Colors.blue,
-                  ):const Icon(Icons.pets,
-                  color: Colors.red) ,
-                )),
-      ),
-    ],
-  );
+        Expanded(
+          child: Consumer(
+            builder: (context, PetsProvider petsProvider, child) =>
+                ListView.builder(
+                    itemCount: provider.searchedPets.data.length,
+                    itemBuilder: (context, index) => ListTile(
+                          leading: CircleAvatar(
+                            radius: 22,
+                            backgroundImage: NetworkImage(
+                                petsProvider.searchedPets.data[index].petImage),
+                            backgroundColor: Colors.grey,
+                          ),
+                          title: Text(
+                              petsProvider.searchedPets.data[index].userName),
+                          trailing:
+                              petsProvider.searchedPets.data[index].isFriendly
+                                  ? const Icon(
+                                      Icons.thumb_up,
+                                      color: Colors.blue,
+                                    )
+                                  : const Icon(Icons.pets, color: Colors.red),
+                        )),
+          ),
+        ),
+      ],
+    );
+  }
 }
