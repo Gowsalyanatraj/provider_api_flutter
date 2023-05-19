@@ -11,7 +11,7 @@ class PetsProvider extends ChangeNotifier {
   String error = '';
   Pets pets = Pets(data: []);
  Pets searchedPets = Pets(data: []);
-  String searchText = '';
+  String searchText = ' ';
 
   //
   getDataFromAPI() async {
